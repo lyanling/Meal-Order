@@ -48,12 +48,13 @@ NTU CSIE 2023 Fall
     brew services restart grafana #重開
     ```
 
-### Grafana設定(非第一次可跳過)
+### 第四步：Grafana設定(非第一次可跳過)
 
 1. 打開```http://localhost:8080```
 
-2. 建立**Conections**：左欄點開=>Connections=>搜尋「Prometheus」後點開=>右上角點Add new data source=>進入頁面中在Connection Block輸入```http://localhost:9090``` =>滑到最下面Save & Test
+2. 建立**Conections**：左欄點開=>Connections=>搜尋「Prometheus」後點開=>右上角點Add new data source=>進入頁面中在Connection Block輸入```http://localhost:9090```=>滑到最下面Save & Test
 
 3. **Import Dashboard**：左欄點開=>DashBoard=>右邊點New，按下Import=>Upload dashboard JSON File=>選```Dashboard.json```
 
-4. 點開**Dashboard**：左欄點開=>DashBoard=>點選「Self-Design Dashboard」
+### 第五步：打開Dashboard
+* 點開**Dashboard**：左欄點開=>DashBoard=>點選「Self-Design Dashboard」
