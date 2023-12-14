@@ -58,21 +58,38 @@ const getOrderMeals = async (req, res, next) => {
             throw err;
         }
     }
-    // query_results.forEach(query_results => {
-    //     query_results['Image_url'] = process.env.IMAGE_PATH + query_results['Image_url'];
-    //     // console.log('row: ', query_results['Image_url']);
-    // })
     res.json(query_results);
 };
 
-const cancelOrder = async (req, res, net) => {
-    const order_id = req.query.orderID;
-    // console.log("in cancelOrder: order_id = ", order_id);
+
+/* get inventory info */
+async function getInventoryInfo(day, meal_id, amount) {
+    let inventory;
     try {
-        const query_str = 'UPDATE `Order` SET `Status` = ? WHERE Order_ID = ?;'
-        const [rows, fields] = await query(query_str, ["CANCELLED_UNCHECKED", order_id]);
-        // console.log("changedRows = ", rows['changedRows']);
-        res.json(rows['changedRows']);
+        const query_inventory_info = 'SELECT `Inventory` FROM `Meal` Where Meal_ID = ?;'
+        const [rows, fields] = await query(query_inventory_info, [meal_id]);
+        // console.log(rows);
+        inventory = rows[0]['Inventory'];
+        // console.log("get inventory info: inventory = ", inventory);
+        inventory[day] = inventory[day] + amount;
+    }
+    catch (err) {
+        console.log(err);
+        throw err;
+    }
+
+    return inventory;
+}
+
+/* update inventory */
+async function updateInventory(day, meal_id, amount) {
+    // console.log("update inventory: day = ", day, ", meal_id = ", meal_id, ", amount = ", amount);
+    const inventory = await getInventoryInfo(day, meal_id, amount);
+    try {
+        const query_inventory_update = 'UPDATE `Meal` SET `Inventory` = ? WHERE Meal_ID = ?;'
+        const [rows, fields] = await query(query_inventory_update, [JSON.stringify(inventory), meal_id]);
+        // console.log("update inventory: inventory = ", inventory);
+        // console.log("update inventory: rows = ", rows);
     }
     catch (err) {
         console.log(err);
@@ -80,8 +97,32 @@ const cancelOrder = async (req, res, net) => {
     }
 }
 
+const cancelOrder = async (req, res, net) => {
+    const order = req.body.order;
+    const date = new Date(order.Pickup_Time);
+    const day = (date.getDay() == 0)? 7 : date.getDay();
+    // console.log("in cancelOrder: order = ", order);
+
+    // update db: order status
+    try {
+        const query_str = 'UPDATE `Order` SET `Status` = ? WHERE Order_ID = ?;'
+        const [rows, fields] = await query(query_str, ["CANCELLED_UNCHECKED", order['Order_ID']]);
+        // console.log("changedRows = ", rows['changedRows']);
+        res.json(rows['changedRows']);
+    }
+    catch (err) {
+        console.log(err);
+        throw err;
+    }
+
+    // update db: meal inventory
+    order['Meal_List'].forEach(order_meal => {
+        updateInventory(day, order_meal.Meal_ID, order_meal.Amount)
+    })
+}
+
 router.post('/', getOrders);
-router.get('/cancelOrder', cancelOrder);
+router.post('/cancelOrder', cancelOrder);
 router.post('/orderMeals', getOrderMeals)
 
 export default router;

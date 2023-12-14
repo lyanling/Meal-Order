@@ -25,12 +25,87 @@ export default function Vendor() {
     const [selectedDate, setSelectedDate] = useState<string>(((new Date()).getFullYear()).toString() + " 年 " + ((new Date()).getMonth()+1).toString() + " 月 " + (new Date()).getDate().toString() + " 日 " + weekday[(new Date().getDay())]);
     const vendor_id = params.vendorId;
     const { sendJsonMessage, lastJsonMessage } = useOutletContext<WebSocketHook<CustomerOrder>>();
+
+    async function confirmOrder(Order_ID: number) {
+        const response = window.confirm(`已接取訂單，訂單編號: #${Order_ID}`);
+        if(!response) return;
+        fetch(BACKEND_URL + `/vendor/confirmOrder`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        setOrders(orders.map(order => {
+            if(order.Order_ID === Order_ID) {
+                order.Status = "PREPARING";
+            }
+            return order;
+        }));
+    }
+    async function finishOrder(Order_ID: number) {
+        fetch(BACKEND_URL + `/vendor/finishOrder`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        setOrders(orders.map(order => {
+            if(order.Order_ID === Order_ID) {
+                order.Status = "READY_FOR_PICKUP";
+            }
+            return order;
+        }));
+    }
+    async function cancelConfirm(Order_ID: number) {
+        const response = window.confirm(`確定訂單已取消 訂單編號: #${Order_ID}`);
+        if(!response) return;
+        fetch(BACKEND_URL + `/vendor/cancelConfirm`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        setOrders(orders.map(order => {
+            if(order.Order_ID === Order_ID) {
+                order.Status = "CANCELLED_CHECKED";
+            }
+            return order;
+        }));
+    }
+    async function pickupConfirm(Order_ID: number) {
+        const response = window.confirm(`確定客戶已取餐 訂單編號: #${Order_ID}`);
+        if(!response) return;
+        fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"orderID" : Order_ID})
+        }).then((res) => res.json())
+          .catch((err) => console.log(err));
+        setOrders(orders.map(order => {
+            if(order.Order_ID === Order_ID) {
+                order.Status = "PICKED_UP";
+            }
+            return order;
+        }));
+    }
     
     useEffect(() => {
         if(lastJsonMessage) {
             if (lastJsonMessage.Status === "WAIT_FOR_APPROVAL") {
                 // 新增訂單
-                setOrders([...orders, lastJsonMessage]);
+                const PickupDate = +(lastJsonMessage.Pickup_Time.split('T')[0]).split('-')[2];
+                const CurrentDate = +selectedDate.split(' ')[4];
+                if(PickupDate === CurrentDate) {
+                    setOrders([...orders, lastJsonMessage]);
+                }     
             }
             else if (lastJsonMessage.Status === "CANCELLED_UNCHECKED") {
                 // 取消訂單
@@ -38,7 +113,9 @@ export default function Vendor() {
                     return order.Order_ID === lastJsonMessage.Order_ID ? lastJsonMessage : order;
                 }));
             }
-            else {}
+            else {
+                // 未知的操作
+            }
         }
     }, [lastJsonMessage]);
 
@@ -71,7 +148,7 @@ export default function Vendor() {
                     </option>))
                 }
             </select>
-            <VendorOrderTab orders={orders}/>
+            <VendorOrderTab orders={orders} confirmOrder={confirmOrder} finishOrder={finishOrder} cancelConfirm={cancelConfirm} pickupConfirm={pickupConfirm} />
         </div>
     );
 }

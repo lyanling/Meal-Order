@@ -6,7 +6,9 @@ import OrderInfoItem from "./VendorOrderInfoItem";
 import OrderContentItem from "./VendorOrderContentItem";
 import Orders from '../../pages/Orders';
 
-export default function OrderItem({ order }: { order: CustomerOrder }) {
+export default function OrderItem({ order, confirmOrder, finishOrder, cancelConfirm, pickupConfirm }: 
+    { order: CustomerOrder, confirmOrder: (orderID: number) => any, finishOrder: (orderID: number) => any, cancelConfirm: (orderID: number) => any, pickupConfirm: (orderID: number) => any }) 
+    {
     const [order_meals, setOrderMeal] = useState<CustomerOrderContent[]>([]);
     const [disclosure, setDisclosure] = useState(false);
     const [bulk_order, setBulkOrder] = useState(false);
@@ -47,6 +49,10 @@ export default function OrderItem({ order }: { order: CustomerOrder }) {
                     handleDisclosureClick={handleDisclosureClick} 
                     disclosure={disclosure}
                     bulk_order={bulk_order}
+                    confirmOrder={confirmOrder} 
+                    finishOrder={finishOrder} 
+                    cancelConfirm={cancelConfirm}
+                    pickupConfirm={pickupConfirm}
                 />
             </div>
             <div>

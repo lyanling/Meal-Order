@@ -4,56 +4,59 @@ import style from '../../style/Vendor/VendorOrderInfoItem.module.css'
 import triangle_style from '../../style/Order/TriangleButton.module.css'
 import { useState, useEffect } from "react";
 
-export default function OrderInfoItem({ order, handleDisclosureClick, disclosure, bulk_order }: 
-    { order: CustomerOrder, handleDisclosureClick: () => any, disclosure: boolean, bulk_order: boolean }) {
+export default function OrderInfoItem({ order, handleDisclosureClick, disclosure, bulk_order, confirmOrder, finishOrder, cancelConfirm, pickupConfirm }: 
+    { 
+    order: CustomerOrder, handleDisclosureClick: () => any, disclosure: boolean, bulk_order: boolean,
+    confirmOrder: (orderID: number) => any, finishOrder: (orderID: number) => any, cancelConfirm: (orderID: number) => any, pickupConfirm: (orderID: number) => any
+    }) {
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
-    async function confirmOrder() {
-        fetch(BACKEND_URL + `/vendor/confirmOrder`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({"orderID" : order.Order_ID})
-        }).then((res) => res.json())
-          .catch((err) => console.log(err));
-        const response = window.confirm(`已接取訂單 #${order.Order_ID}`);
-        window.location.reload()
-    }
-    async function finishOrder() {
-        fetch(BACKEND_URL + `/vendor/finishOrder`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({"orderID" : order.Order_ID})
-        }).then((res) => res.json())
-          .catch((err) => console.log(err));
-        window.location.reload()
-    }
-    async function cancelConfirm() {
-        fetch(BACKEND_URL + `/vendor/cancelConfirm`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({"orderID" : order.Order_ID})
-        }).then((res) => res.json())
-          .catch((err) => console.log(err));
-        window.location.reload()
-    }
-    async function pickupConfirm() {
-        fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({"orderID" : order.Order_ID})
-        }).then((res) => res.json())
-          .catch((err) => console.log(err));
-        window.location.reload()
-    }
+    // async function confirmOrder() {
+    //     fetch(BACKEND_URL + `/vendor/confirmOrder`, {
+    //         method: 'POST',
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({"orderID" : order.Order_ID})
+    //     }).then((res) => res.json())
+    //       .catch((err) => console.log(err));
+    //     const response = window.confirm(`已接取訂單 #${order.Order_ID}`);
+    //     //window.location.reload()
+    // }
+    // async function finishOrder() {
+    //     fetch(BACKEND_URL + `/vendor/finishOrder`, {
+    //         method: 'POST',
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({"orderID" : order.Order_ID})
+    //     }).then((res) => res.json())
+    //       .catch((err) => console.log(err));
+    //     //window.location.reload()
+    // }
+    // async function cancelConfirm() {
+    //     fetch(BACKEND_URL + `/vendor/cancelConfirm`, {
+    //         method: 'POST',
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({"orderID" : order.Order_ID})
+    //     }).then((res) => res.json())
+    //       .catch((err) => console.log(err));
+    //     //window.location.reload()
+    // }
+    // async function pickupConfirm() {
+    //     fetch(BACKEND_URL + `/vendor/pickupConfirm`, {
+    //         method: 'POST',
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({"orderID" : order.Order_ID})
+    //     }).then((res) => res.json())
+    //       .catch((err) => console.log(err));
+    //     //window.location.reload()
+    // }
 
     useEffect(() => {
 
@@ -109,13 +112,13 @@ export default function OrderInfoItem({ order, handleDisclosureClick, disclosure
                 <div className={style.orderInfoItem_confirmBox}>
                     <button className={style.orderInfoItem_confirmButton} onClick={() => {
                         if(order.Status === 'WAIT_FOR_APPROVAL') {
-                            confirmOrder();
+                            confirmOrder(order.Order_ID);
                         } else if(order.Status === 'PREPARING') {
-                            finishOrder();
+                            finishOrder(order.Order_ID);
                         } else if (order.Status === 'CANCELLED_UNCHECKED') {
-                            cancelConfirm();
+                            cancelConfirm(order.Order_ID);
                         } else if (order.Status === 'READY_FOR_PICKUP') {
-                            pickupConfirm();
+                            pickupConfirm(order.Order_ID);
                         }
                     }}>
                         <span>{(order.Status === 'WAIT_FOR_APPROVAL') ? "接單" : 

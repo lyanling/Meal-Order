@@ -4,7 +4,9 @@ import OrderItem from "./VendorOrderItem";
 import { useParams } from 'react-router-dom';
 
 
-export default function OrderTab({ orders }: { orders: Array<CustomerOrder> }) {
+export default function OrderTab({ orders, confirmOrder, finishOrder, cancelConfirm, pickupConfirm }: 
+    { orders: Array<CustomerOrder>, confirmOrder: (orderID: number) => any, finishOrder: (orderID: number) => any, cancelConfirm: (orderID: number) => any, pickupConfirm: (orderID: number) => any }) 
+    {
     /*let myorder: CustomerOrder = {
         Order_ID : 1,
         Customer_ID : 1,
@@ -32,19 +34,19 @@ export default function OrderTab({ orders }: { orders: Array<CustomerOrder> }) {
                         if(order.Status === 'WAIT_FOR_APPROVAL' || order.Status === 'PREPARING') {
                             return (
                                 <div key={order.Order_ID} className = {style.YellowContainer}>
-                                    <OrderItem order={order} />
+                                    <OrderItem order={order} confirmOrder={confirmOrder} finishOrder={finishOrder} cancelConfirm={cancelConfirm} pickupConfirm={pickupConfirm} />
                                 </div>
                             )
                         } else if (order.Status === 'CANCELLED_UNCHECKED') {
                             return (
                                 <div key={order.Order_ID} className = {style.RedContainer}>
-                                    <OrderItem order={order} />
+                                    <OrderItem order={order} confirmOrder={confirmOrder} finishOrder={finishOrder} cancelConfirm={cancelConfirm} pickupConfirm={pickupConfirm} />
                                 </div>
                             )
                         } else if (order.Status === 'READY_FOR_PICKUP') {
                             return (
                                 <div key={order.Order_ID} className = {style.GreenContainer}>
-                                    <OrderItem order={order} />
+                                    <OrderItem order={order} confirmOrder={confirmOrder} finishOrder={finishOrder} cancelConfirm={cancelConfirm} pickupConfirm={pickupConfirm} />
                                 </div>
                             )
                         }
@@ -53,7 +55,7 @@ export default function OrderTab({ orders }: { orders: Array<CustomerOrder> }) {
                 </div>
                 
             ) : (
-                <div className="orders_empty">\
+                <div className="orders_empty">
                     <span className="orders_empty_title">目前沒有訂單！</span>
                 </div>
             )}

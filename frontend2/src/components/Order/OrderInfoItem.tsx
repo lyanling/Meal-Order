@@ -13,12 +13,12 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
     useEffect(() => {
 
         function buildTimeInfo(date_time: Date) {
-            const WEEKDAYS: Array<string> = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
+            const DAYS: Array<string> = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
             let time_info: OrderTimeInfo = {
                 year: date_time.getFullYear().toString(),
                 month: (date_time.getMonth() + 1).toString(),
                 date: (date_time.getDate()).toString(),
-                day: WEEKDAYS[date_time.getDay()],
+                day: DAYS[date_time.getDay()],
                 hour: ((date_time.getHours() > 12) ?
                     date_time.getHours() - 12 : date_time.getHours()).toString(),
                 minute: date_time.getMinutes().toString().padStart(2, '0'),
