@@ -1,27 +1,27 @@
-FROM node:20-alpine
 # The base image for Dockerizing the Node.js application
+FROM node:20-alpine
 
-# RUN apk add --no-cache tzdata
+# set time zone
+RUN apk add --no-cache tzdata
+ENV TZ="Asia/Taipei"
 
-# ENV TZ="Asia/Taipei"
-
-RUN npm install -g nodemon
 # Installing the nodemon package for monitoring the Express server
+RUN npm install -g nodemon
 
-WORKDIR .
 # Creating the working directory
+WORKDIR .
 
-COPY package.json .
 # Copies the dependencies in the package.json file
+COPY package.json .
 
-RUN npm install
 # Installing all the dependencies
+RUN npm install
 
-COPY . .
 # Copies all the files to the working directory
+COPY . .
 
-EXPOSE 8081
 # Container will run on this port
+EXPOSE 8081
 
-CMD ["node", "app.js"]
 # Start the Docker container Node.js application
+CMD ["node", "app.js"]
