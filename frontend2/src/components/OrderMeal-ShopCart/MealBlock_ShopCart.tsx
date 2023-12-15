@@ -68,7 +68,10 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
             try {
                 const result = await fetch(url).then((res) => { return res.json(); })
                 setvendorName(result[0]['Name']);
-                setPickupTime(new Date(result[0]['Pickup_Time']));
+                let hrsOffset = (new Date().getTimezoneOffset())/60    
+                let wrongTime = new Date(result[0]['Pickup_Time'])
+                let rightTime = wrongTime.setHours(wrongTime.getHours()+hrsOffset)
+                setPickupTime(new Date(rightTime));
                 setMealList(result[0]['Meal_List']);
                 setcashAmount(result[0]['Cash_Amount']);
                 setMealList(result[0]['Meal_List']);
@@ -84,7 +87,6 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
             abortController.abort();
         }
     }, [Order_ID])
-
     /* Generate the showing content */
     let year = pickupTime.getFullYear().toString();
     let month = (pickupTime.getMonth() + 1).toString();
