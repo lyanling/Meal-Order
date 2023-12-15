@@ -115,7 +115,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                         <div className={style.OrderInfo}>
                             <div>
                                 <h1 className={style.ResName1} >
-                                    <Link to={`/customer/${customerId}/vendor/${vendor_id}`}>
+                                    <Link to={`/customer/${customerId}/vendor/${vendor_id}`} className={style.VendorName}>
                                         {vendorName}
                                     </Link>
                                 </h1>
@@ -195,7 +195,7 @@ export default function MealBlock({ Order_ID, intime }: { Order_ID: number, inti
                         <div className={style.OrderInfo}>
                             <div>
                                 <h1 className={style.ResName}>
-                                    <Link to={`/customer/1/vendor/${vendor_id}`} className={style.VendorName} >
+                                    <Link to={`/customer/${customerId}/vendor/${vendor_id}`} className={style.VendorName} >
                                         {vendorName}
                                     </Link>(已逾時)
                                 </h1>
