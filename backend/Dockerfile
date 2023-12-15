@@ -1,6 +1,10 @@
 FROM node:20-alpine
 # The base image for Dockerizing the Node.js application
 
+# RUN apk add --no-cache tzdata
+
+# ENV TZ="Asia/Taipei"
+
 RUN npm install -g nodemon
 # Installing the nodemon package for monitoring the Express server
 
