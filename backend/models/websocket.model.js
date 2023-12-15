@@ -24,7 +24,9 @@ export default class wsServer {
             });
             connection.on("close", (code) => {
                 console.log(`${identity} ${id} disconnected websocket`);
-                this.vendorConnections[id] = this.vendorConnections[id].filter((vendorConnection) => vendorConnection._closeCode !== code);
+                if (identity === 'vendor') {
+                    this.vendorConnections[id] = this.vendorConnections[id].filter((vendorConnection) => vendorConnection._closeCode !== code);
+                }
             })
         })
     }
