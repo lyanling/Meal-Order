@@ -9,8 +9,8 @@ NTU CSIE 2023 Fall
     brew install grafana
     ```
 
-### 第二步：調整Grafana的```config File```
-* 因爲```Grafana```裡面的```Port```預設為```3000```會衝突，所以調整Config File(路徑可能不太一樣)
+### 第二步：調整及新增Configuration File
+* ```Grafana```:因爲```Grafana```裡面的```Port```預設為```3000```會衝突，所以調整Config File(路徑可能不太一樣)
     
     ```
     vim /opt/homebrew/etc/grafana/grafana.ini
@@ -18,6 +18,8 @@ NTU CSIE 2023 Fall
     ;http_port = 3000 #原本，換成以下的
     http_port = 8080
     ```
+
+* ```MySQL Exporter```：在```backend```資料夾新增```.my.cnf```檔案，內存帳號密碼等資訊(參考Hackmd```.my.cnf```)內容
 
 ### 第三步：依序開啟相關服務
 1. 先到```backend```資料夾
