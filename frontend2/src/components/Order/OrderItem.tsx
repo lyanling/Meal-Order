@@ -60,7 +60,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                 || order.Status === OrderStatus.READY_FOR_PICKUP) {
                 setOrderStatus("IN_PROGRESS");
             }
-            else { // PICKED_UP, CANCELLED_UNCHECKED, CANCELLED_CHECKED
+            else { /* PICKED_UP, CANCELLED_UNCHECKED, CANCELLED_CHECKED */
                 setOrderStatus("COMPLETED");
             }
         }
