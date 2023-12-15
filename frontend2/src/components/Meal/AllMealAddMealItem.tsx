@@ -108,7 +108,7 @@ export default function AllMealAddMealItem({setMeals}: {setMeals: React.Dispatch
     else {
       const today = new Date().getDay();
       let inventory: Record<string, number> = {};
-      for (let i = 0; i < 7; i++){
+      for (let i = 1; i <= 7; i++){
         inventory[i.toString()] = 0;
       }
 
