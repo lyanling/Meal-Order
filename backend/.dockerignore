@@ -1,6 +1,11 @@
 Dockerfile
 
 node_modules
+mysqld_exporter
+.my.cnf
+prometheus_config.yml
+Dashboard.json
+
 .gitignore
 .env
 .DS_Store

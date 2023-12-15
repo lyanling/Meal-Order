@@ -55,8 +55,6 @@ export default function Orders() {
             if (order_cancelled !== undefined) {
                 try {
                     const url: string = BACKEND_URL + `/orders/cancelOrder?orderID=${order_cancelled?.Order_ID}`;
-                    // const res = await fetch(url).then(res => { return res.json(); }); // changedRows
-                    // success = res > 0;
 
                     const res = await fetch(url, {
                         method: 'POST',
@@ -64,12 +62,14 @@ export default function Orders() {
                         body: JSON.stringify({
                             order: order_cancelled
                         })
-                    });
+                    }).then(res => { return res.json(); }); // changedRows
+
+                    success = res > 0;
                 } catch (e) {
                     console.log("Error: cancel order from backend: ", e);
                 }
             }
-            return success;
+            // return success;
         }
 
         function notifyCancellationToVendor(order_cancelled: CustomerOrder | undefined) {
@@ -86,9 +86,11 @@ export default function Orders() {
                 });
             }
         }
-        // update orders
+
+        /* update orders */
         const order_cancelled: CustomerOrder | undefined = await updateOrders(order_id);
-        // cancel (notify Vendor & write db)
+
+        /* cancel (notify Vendor & write db) */
         notifyCancellationToVendor(order_cancelled);
         toCancelOrder(order_cancelled);
     }
