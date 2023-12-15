@@ -3,7 +3,7 @@ import style from '../../style/Settlement/SettlementTable.module.css';
 
 const DateParse = (time: string) => {
     const date = new Date(time);
-    return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+    return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
 }
 
 export default function SettlementTable({ orders, identity }: { orders: SettlementOrder[], identity: 'customer' | 'vendor' }) {
