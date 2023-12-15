@@ -98,7 +98,7 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                                 alert('您選擇的餐點數量為零或已超過當下庫存量，請重新選擇數量!');
                                 window.location.reload();
                             }else{
-                                alert('您選擇的餐點已下訂!');
+                                alert('已加入購物車!');
                                 window.location.reload();
                             }
                             }}>
