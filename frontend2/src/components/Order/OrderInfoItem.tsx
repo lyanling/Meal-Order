@@ -2,10 +2,14 @@ import type { OrderTimeInfo } from '../../type'
 import style from '../../style/Order/OrderInfoItem.module.css'
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 
 export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_status, order_pickup_time, order_cancel_dl }: 
     { order_id: number, vendor_id: number, vendor_name: string, 
         order_status: "IN_PROGRESS" | "COMPLETED", order_pickup_time: Date, order_cancel_dl: Date }) {
+    const params = useParams();
+    const customer_id = params.customerId;
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
@@ -41,7 +45,7 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
         <div className={style.orderInfoItem_container}>
 
             {/* [click vendor name] link to vendor-order page */}
-            <Link className={style.orderInfoItem_title} to={`/customer/1/vendor/${vendor_id}`}>
+            <Link className={style.orderInfoItem_title} to={`/customer/${customer_id}/vendor/${vendor_id}`}>
                 {vendor_name}
             </Link>
 
