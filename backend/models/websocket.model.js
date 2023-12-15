@@ -22,6 +22,10 @@ export default class wsServer {
                     });
                 }
             });
+            connection.on("close", () => {
+                console.log(`${identity} ${id} disconnected websocket`);
+                delete this.vendorConnections[id];
+            })
         })
     }
 }
