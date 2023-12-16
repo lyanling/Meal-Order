@@ -27,6 +27,28 @@ const updateOnClick = (meal: Meal, count: number) => {
     });
 }
 
+const setZeroOnClick = (meal: Meal, setCount: React.Dispatch<React.SetStateAction<number>>) => {
+
+  const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
+  fetch(update_url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ mealId: meal.Meal_ID, count: 0})
+  }).then((res) => {
+    if (!res.ok){
+      console.log(res.status);
+      throw new Error('Network response was not ok');
+    }
+    alert(`${meal.Meal_Name} 下架成功！`);
+  }).then(() => { setCount(0); })
+    .catch((err) => {
+      console.log(err);
+      alert("Network error :(");
+    });
+}
+
 export default function AllMealMealItem({ meal }: {meal: Meal}) {
   const [count, setCount] = useState(meal.Default_Inventory);
 
@@ -34,13 +56,17 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
     <div className={style.allMealMealItem_item}>
         <div className={style.allMealMealItem_contentContainer}>
             <span className={style.allMealMealItem_mealName}>{meal.Meal_Name}</span>
-            {/* TODO: price / number or amount */}
-            {/* <span>{(meal.price * meal.count).toLocaleString()} تومان</span> */}
+            <span className={style.allMealMealItem_price}>NT${meal.Price}</span>
         </div>
 
         <div className={style.allMealMealItem_otherContainer}>
-          <div className={style.allMealMealItem_updateButtonBox}>
-            <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count)}/>
+          <div className={style.allMealMealItem_allButtonBox}>
+            <div className={style.allMealMealItem_buttonBox}>
+              <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count)}/>
+            </div>
+            <div className={style.allMealMealItem_buttonBox}>
+              <BaseButton text="下架" onClickFunc={() => setZeroOnClick(meal, setCount)}/>
+            </div>
           </div>
           <div className={style.allMealMealItem_counterBox}>
             <div className={style.allMealMealItem_counter}>

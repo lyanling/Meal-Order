@@ -16,8 +16,22 @@ export default function AllMeals() {
                 const res = await fetch(
                     BACKEND_URL + `/allMeals?vendorId=${vendorId}`
                 ).then(res => { return res.json(); });
+                
+                // sort
+                let sortable = [];
+                for (var i = 0; i < res.length; i++) {
+                    sortable.push([res[i].Default_Inventory, res[i]]);
+                }
+                sortable.sort(function(a, b) {
+                    return b[0] - a[0];
+                });
+                let sorted_meals = [];
+                for (var i = 0; i < sortable.length; i++){
+                    sorted_meals.push(sortable[i][1]);
+                }
+                // console.log("sorted_meals = ", sorted_meals);
+                setMeals(sorted_meals);
 
-                setMeals(res);
             } catch (e) {
                 console.log("Error fetching all_meals from backend: ", e);
             }
