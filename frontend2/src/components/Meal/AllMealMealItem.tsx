@@ -3,7 +3,8 @@ import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
 import { useState } from 'react'
-import  BaseButton from '../shared/BaseButton'
+import BaseButton from '../shared/BaseButton'
+import BaseButtonRed from '../shared/BaseButtonRed'
 
 const updateOnClick = (meal: Meal, count: number, updateMeals: any) => {
 
@@ -70,10 +71,10 @@ export default function AllMealMealItem({ meal, updateMeals }: {meal: Meal, upda
         <div className={style.allMealMealItem_otherContainer}>
           <div className={style.allMealMealItem_allButtonBox}>
             <div className={style.allMealMealItem_buttonBox}>
-              <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count, updateMeals)}/>
+              <BaseButton text="更新庫存" onClickFunc={() => updateOnClick(meal, count, updateMeals)}/>
             </div>
             <div className={style.allMealMealItem_buttonBox}>
-              <BaseButton text="下架" onClickFunc={() => setZeroOnClick(meal, setCount, updateMeals)}/>
+              <BaseButtonRed text="下架" onClickFunc={() => setZeroOnClick(meal, setCount, updateMeals)}/>
             </div>
           </div>
           <div className={style.allMealMealItem_counterBox}>
