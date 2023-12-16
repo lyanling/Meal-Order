@@ -5,7 +5,7 @@ import { BACKEND_URL } from '../../constant'
 import { useState } from 'react'
 import  BaseButton from '../shared/BaseButton'
 
-const updateOnClick = (meal: Meal, count: number) => {
+const updateOnClick = (meal: Meal, count: number, updateMeals: any) => {
 
   const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
   fetch(update_url, {
@@ -20,6 +20,9 @@ const updateOnClick = (meal: Meal, count: number) => {
       throw new Error('Network response was not ok');
     }
     alert(`${meal.Meal_Name} 預設庫存更新成功！`);
+  }).then(() => { 
+    meal.Default_Inventory = count;
+    updateMeals(meal);
   })
     .catch((err) => {
       console.log(err);
@@ -27,7 +30,8 @@ const updateOnClick = (meal: Meal, count: number) => {
     });
 }
 
-const setZeroOnClick = (meal: Meal, setCount: React.Dispatch<React.SetStateAction<number>>) => {
+const setZeroOnClick = (meal: Meal, setCount: React.Dispatch<React.SetStateAction<number>>,
+                        updateMeals: any) => {
 
   const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
   fetch(update_url, {
@@ -42,14 +46,18 @@ const setZeroOnClick = (meal: Meal, setCount: React.Dispatch<React.SetStateActio
       throw new Error('Network response was not ok');
     }
     alert(`${meal.Meal_Name} 下架成功！`);
-  }).then(() => { setCount(0); })
+  }).then(() => { 
+    setCount(0);
+    meal.Default_Inventory = 0;
+    updateMeals(meal);
+  })
     .catch((err) => {
       console.log(err);
       alert("Network error :(");
     });
 }
 
-export default function AllMealMealItem({ meal }: {meal: Meal}) {
+export default function AllMealMealItem({ meal, updateMeals }: {meal: Meal, updateMeals: any}) {
   const [count, setCount] = useState(meal.Default_Inventory);
 
   return (
@@ -62,10 +70,10 @@ export default function AllMealMealItem({ meal }: {meal: Meal}) {
         <div className={style.allMealMealItem_otherContainer}>
           <div className={style.allMealMealItem_allButtonBox}>
             <div className={style.allMealMealItem_buttonBox}>
-              <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count)}/>
+              <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count, updateMeals)}/>
             </div>
             <div className={style.allMealMealItem_buttonBox}>
-              <BaseButton text="下架" onClickFunc={() => setZeroOnClick(meal, setCount)}/>
+              <BaseButton text="下架" onClickFunc={() => setZeroOnClick(meal, setCount, updateMeals)}/>
             </div>
           </div>
           <div className={style.allMealMealItem_counterBox}>
