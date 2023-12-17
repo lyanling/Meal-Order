@@ -106,7 +106,8 @@ export default function MealItem({meal,inventory,soldout,mealshowday,ordertime}:
                                 window.location.reload();
                             }else{
                                 alert('已加入購物車!');
-                                window.location.reload();
+                                //window.location.reload();
+                                setCount(0);
                             }
                             }}>
                             加入購物車
