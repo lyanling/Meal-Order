@@ -1,0 +1,21 @@
+.baseButton_button {
+    padding: 3px 10px;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.baseButton_button {
+    background-color: rgb(215, 0, 0);
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+  
+.baseButton_button:hover {
+    opacity: 0.8;
+}

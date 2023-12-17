@@ -3,9 +3,10 @@ import style from '../../style/Meal/AllMealMealItem.module.css'
 import Counter from '../shared/Counter'
 import { BACKEND_URL } from '../../constant'
 import { useState } from 'react'
-import  BaseButton from '../shared/BaseButton'
+import BaseButton from '../shared/BaseButton'
+import BaseButtonRed from '../shared/BaseButtonRed'
 
-const updateOnClick = (meal: Meal, count: number) => {
+const updateOnClick = (meal: Meal, count: number, updateMeals: any) => {
 
   const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
   fetch(update_url, {
@@ -20,6 +21,9 @@ const updateOnClick = (meal: Meal, count: number) => {
       throw new Error('Network response was not ok');
     }
     alert(`${meal.Meal_Name} 預設庫存更新成功！`);
+  }).then(() => { 
+    meal.Default_Inventory = count;
+    updateMeals(meal);
   })
     .catch((err) => {
       console.log(err);
@@ -27,20 +31,51 @@ const updateOnClick = (meal: Meal, count: number) => {
     });
 }
 
-export default function AllMealMealItem({ meal }: {meal: Meal}) {
+const setZeroOnClick = (meal: Meal, setCount: React.Dispatch<React.SetStateAction<number>>,
+                        updateMeals: any) => {
+
+  const update_url = `${BACKEND_URL}/allMeals/updateDefaultInventory`;
+  fetch(update_url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ mealId: meal.Meal_ID, count: 0})
+  }).then((res) => {
+    if (!res.ok){
+      console.log(res.status);
+      throw new Error('Network response was not ok');
+    }
+    alert(`${meal.Meal_Name} 下架成功！`);
+  }).then(() => { 
+    setCount(0);
+    meal.Default_Inventory = 0;
+    updateMeals(meal);
+  })
+    .catch((err) => {
+      console.log(err);
+      alert("Network error :(");
+    });
+}
+
+export default function AllMealMealItem({ meal, updateMeals }: {meal: Meal, updateMeals: any}) {
   const [count, setCount] = useState(meal.Default_Inventory);
 
   return (
     <div className={style.allMealMealItem_item}>
         <div className={style.allMealMealItem_contentContainer}>
             <span className={style.allMealMealItem_mealName}>{meal.Meal_Name}</span>
-            {/* TODO: price / number or amount */}
-            {/* <span>{(meal.price * meal.count).toLocaleString()} تومان</span> */}
+            <span className={style.allMealMealItem_price}>NT${meal.Price}</span>
         </div>
 
         <div className={style.allMealMealItem_otherContainer}>
-          <div className={style.allMealMealItem_updateButtonBox}>
-            <BaseButton text="更新" onClickFunc={() => updateOnClick(meal, count)}/>
+          <div className={style.allMealMealItem_allButtonBox}>
+            <div className={style.allMealMealItem_buttonBox}>
+              <BaseButton text="更新庫存" onClickFunc={() => updateOnClick(meal, count, updateMeals)}/>
+            </div>
+            <div className={style.allMealMealItem_buttonBox}>
+              <BaseButtonRed text="下架" onClickFunc={() => setZeroOnClick(meal, setCount, updateMeals)}/>
+            </div>
           </div>
           <div className={style.allMealMealItem_counterBox}>
             <div className={style.allMealMealItem_counter}>
