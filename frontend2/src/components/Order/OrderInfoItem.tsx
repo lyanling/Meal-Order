@@ -2,10 +2,17 @@ import type { OrderTimeInfo } from '../../type'
 import style from '../../style/Order/OrderInfoItem.module.css'
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_status, order_pickup_time, order_cancel_dl }: 
-    { order_id: number, vendor_id: number, vendor_name: string, 
-        order_status: "IN_PROGRESS" | "COMPLETED", order_pickup_time: Date, order_cancel_dl: Date }) {
+
+export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_status, order_pickup_time,
+    order_cancel_dl, can_cancel }:{
+        order_id: number, vendor_id: number, vendor_name: string,
+        order_status: "IN_PROGRESS" | "COMPLETED", order_pickup_time: Date, order_cancel_dl: Date, can_cancel: boolean
+    }) {
+
+    const params = useParams();
+    const customer_id = params.customerId;
     const [pickup_time_str, setPickupTimeStr] = useState("");
     const [cancel_dl_str, setCancelDLStr] = useState("");
 
@@ -37,11 +44,24 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
         setCancelDLStr(buildTimeStr(cancel_dl));
     }, [order_pickup_time, order_cancel_dl]);
 
+    function orderCancelTimeSwitch() {
+        if (can_cancel === true) {
+            return (
+                <span className={style.orderInfoItem_warning}>{'最後取消時間：' + cancel_dl_str}</span>
+            );
+        }
+        else {
+            return (
+                <span className={style.orderInfoItem_warning}>{'最後取消時間：已超過可以取消訂單的時間'}</span>
+            );
+        }
+    }
+
     return (
         <div className={style.orderInfoItem_container}>
 
             {/* [click vendor name] link to vendor-order page */}
-            <Link className={style.orderInfoItem_title} to={`/customer/1/vendor/${vendor_id}`}>
+            <Link className={style.orderInfoItem_title} to={`/customer/${customer_id}/vendor/${vendor_id}`}>
                 {vendor_name}
             </Link>
 
@@ -50,7 +70,7 @@ export default function OrderInfoItem({ order_id, vendor_id, vendor_name, order_
             <span className={style.orderInfoItem_note}>{'取餐時間：' + pickup_time_str}</span>
             { order_status === "IN_PROGRESS"?
                 <div>
-                    <span className={style.orderInfoItem_warning}>{'最後取消時間：' + cancel_dl_str}</span>
+                    {orderCancelTimeSwitch()}
                 </div>
                 :
                 <></>

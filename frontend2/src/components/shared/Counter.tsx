@@ -10,7 +10,7 @@ export default function Counter({count, setCount}:
         const number = Number(text);
         if (!isNaN(number)){
             setCount(number);
-            console.log("count updated");
+            // console.log("count updated");
         }
     };
     
