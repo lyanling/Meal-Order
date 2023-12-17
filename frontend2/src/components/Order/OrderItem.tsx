@@ -156,6 +156,7 @@ export default function OrderItem({ order, handleOrderCancellation }:
                         order_status={order_status}
                         order_pickup_time={order_pickup_time}
                         order_cancel_dl={order_cancel_dl}
+                        can_cancel={can_cancel}
                     />
                 </div>
 
