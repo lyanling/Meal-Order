@@ -57,7 +57,7 @@ const getConfirmOrder = async (req, res, net) => {
         const query_str = 'SELECT Email FROM Customer WHERE Customer_ID =\
             (SELECT Customer_ID from`Order` WHERE Order_ID = ?)'
         const [rows, fields] = await query(query_str, [orderID]);
-        SendMail({to: rows[0].Email, subject: `"餐點確認通知"`, text: `"店家已接單"`})
+        SendMail({to: rows[0].Email, subject: `"FoodApp: 餐點確認通知"`, text: `"店家已接單"`})
         //console.log(rows);
         res.json(rows);
     }

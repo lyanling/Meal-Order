@@ -32,10 +32,10 @@ export const SendDailyEmail = async () => {
             customers.set(cEmail, customers.get(cEmail) + `-----------\n`);
         }
         vendors.forEach((text, email) => {
-            SendMail({to: email, subject: `${year}/${month}/${date} 餐點預訂通知`, text: text});
+            SendMail({to: email, subject: `FoodApp: ${year}/${month}/${date} 餐點預訂通知`, text: text});
         });
         customers.forEach((text, email) => {
-            SendMail({to: email, subject: `${year}/${month}/${date} 餐點製作通知`, text: text});
+            SendMail({to: email, subject: `FoodApp: ${year}/${month}/${date} 餐點製作通知`, text: text});
         });
     } catch (error) {
         throw error;
