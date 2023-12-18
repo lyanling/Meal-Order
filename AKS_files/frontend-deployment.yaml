@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: meal-order-frontend
-        image: mealorderimages.azurecr.io/meal-order-frontend:latest
+        image: acrmealorderimages.azurecr.io/meal-order-frontend:latest
         # resources:
         #   limits:
         #     memory: "3560Mi"
@@ -41,7 +41,6 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: app-config
-              # key: REACT_APP_WS_PORT
               key: PORT
 
 ---
