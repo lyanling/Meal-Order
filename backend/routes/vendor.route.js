@@ -71,7 +71,7 @@ const getFinishOrder = (req, res, net) => {
     const orderID = req.body.orderID;
     query_callBack('UPDATE `Order` SET `Status` = "READY_FOR_PICKUP"\
                     WHERE `Order_ID` = ?', [orderID],
-        (err) => {console.log(`Error updating the inventory: ${err}`)}
+        (err) => {console.log(`Error getFinishOrder: ${err}`)}
     );
 }
 
@@ -80,7 +80,7 @@ const getCancelConfirm = (req, res, net) => {
     const orderID = req.body.orderID;
     query_callBack('UPDATE `Order` SET `Status` = "CANCELLED_CHECKED"\
                     WHERE `Order_ID` = ?', [orderID],
-        (err) => {console.log(`Error updating the inventory: ${err}`)}
+        (err) => {console.log(`Error getCancelConfirm: ${err}`)}
     );
 }
 
@@ -89,7 +89,7 @@ const getPickupConfirm = (req, res, net) => {
     const orderID = req.body.orderID;
     query_callBack('UPDATE `Order` SET `Status` = "PICKED_UP"\
                     WHERE `Order_ID` = ?', [orderID],
-        (err) => {console.log(`Error updating the inventory: ${err}`)}
+        (err) => {console.log(`Error getPickupConfirm: ${err}`)}
     );
 }
 
@@ -98,7 +98,7 @@ const getCancelOrder = (req, res, net) => {
     const orderID = req.body.orderID;
     query_callBack('UPDATE `Order` SET `Status` = "CANCELLED_UNCHECKED"\
                     WHERE `Order_ID` = ?', [orderID],
-        (err) => {console.log(`Error updating the inventory: ${err}`)}
+        (err) => {console.log(`Error getCancelOrder: ${err}`)}
     );
 }
 
