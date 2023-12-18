@@ -18,6 +18,7 @@ export default class wsServer {
                 console.log(`ws recieve ${message}`);
                 if (message.Vendor_ID in this.vendorConnections) {
                     this.vendorConnections[message.Vendor_ID].forEach(vendorConnection => {
+                        console.log(`send to vendor ${message.Vendor_ID}`)
                         vendorConnection.send(JSON.stringify(message));
                     });
                 }
