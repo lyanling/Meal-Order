@@ -6,7 +6,7 @@ import type { LoginInput } from "../../type";
 
 export default function LoginForm({ identity, handleActive }: { identity: "customer" | "vendor", handleActive: (e: React.MouseEvent) => void }) {
     const text = identity === "customer" ? "顧客登入" : "商家登入";
-    const defaultemail = "peanallen5123@gmail.com";
+    const defaultemail = "lawrence0999@gmail.com";
     const defaultpassword = identity === "customer" ? "LLL" : "tttt";
     const [userInput, setUserInput] = useState<LoginInput>({
         email: defaultemail,
