@@ -289,12 +289,12 @@ data:
 ```bash
 # Run meal-order backend
 kubectl create namespace meal-order
-./run.sh
+./run_backend.sh
 
 # Run meal-order frontend
 kubectl create namespace meal-order
 ## Modify backend url in confimap.yaml and run it
-./run2.sh
+./run_frontend.sh
 ```
 #### 9. Run Prometheus & Grafana
 ```bash
