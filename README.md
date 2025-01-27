@@ -6,14 +6,21 @@ Our app provides a platform built with React and Express, allowing consumers to 
 
 Deployed on Azure with Kubernetes, the app ensures high availability and scalability, while a load balancer distributes traffic evenly for optimal performance.
 
-![alt text](imgs/introduction.png)
+|            |
+|:----------:|
+| ![alt text](imgs/introduction.png) |
+
 
 
 ### Features for Vendor
 
 #### Add Meals
 Vendors can set the name, price, and quantity of meals.
-![alt text](imgs/vendor_meals.png)
+
+|            |
+|:----------:|
+| ![alt text](imgs/vendor_meals.png)|
+
 
 
 
@@ -22,24 +29,42 @@ Easily manage orders with color-coded statuses:
 Green: Order completed
 Yellow: Order in progress
 Red: Order canceled
-![alt text](imgs/vendor_order.png)
+
+|            |
+|:----------:|
+| ![alt text](imgs/vendor_order.png)|
+
 
 
 #### Monthly Settlement
 Generate monthly financial summaries for vendors.
-![alt text](imgs/vendor_month.jpg)
+
+|            |
+|:----------:|
+| ![alt text](imgs/vendor_month.jpg)|
 
 ### Features for Customer
 #### Restaurant Search
 Search for target restaurants by name or category.
-![alt text](imgs/customer_home.png)
+
+|            |
+|:----------:|
+| ![alt text](imgs/customer_home.png)|
+
 
 
 #### Place Orders
 After placing an order, customers will see the pickup time and the deadline for cancellations. Orders can be canceled before this deadline.
 
-![alt text](imgs/customer_meals.png)
-![alt text](imgs/customer_orders.jpg)
+|            |
+|:----------:|
+| ![alt text](imgs/customer_meals.png)|
+
+|            |
+|:----------:|
+| ![alt text](imgs/customer_orders.jpg)|
+
+
 
 ## Usage
 ### Application (Run Locally)
@@ -372,4 +397,7 @@ ContainerLogV2
 
 ## Unit Test
 - Use Jest to test the frontend
-    - ![alt text](imgs/unit_test.png)
+
+|            |
+|:----------:|
+| ![alt text](imgs/unit_test.png)|
